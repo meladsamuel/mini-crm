@@ -9,7 +9,11 @@
                     Company
                 </h5>
                 <div>
+                    @if ($company->logo && file_exists(public_path('storage/'.$company->logo)))
                     <img width="100%" src="{{ asset('storage/' . $company->logo) }}" alt="{{ $company->name }} logo">
+                    @else
+                    <img width="100%" src="{{ asset('company.png') }}">
+                    @endif
                 </div>
                 <table class="table table-condensed">
                     <tbody>

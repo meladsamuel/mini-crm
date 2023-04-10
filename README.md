@@ -48,3 +48,6 @@ Once you are logged in, you can manage companies and their employees. To add a n
 ## Email Notification
 This application also sends an email notification whenever a new company is added. You need to set up Mailgun account and configure .env file accordingly. The email will be sent to the email address specified in the MAIL_FROM_ADDRESS configuration variable.
 
+## Testing
+
+Before running the tests, make sure to set up a testing environment in your .env.testing file, and migrate the testing database by running php artisan migrate --env=testing.
