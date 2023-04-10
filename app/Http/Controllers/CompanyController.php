@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewCompanyNotification;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CompanyController extends Controller
 {
@@ -43,7 +45,12 @@ class CompanyController extends Controller
             $file->storeAs('public', $filename);
             $newCompany['logo'] = $filename;
         }
+
         $company = Company::create($newCompany);
+
+        // send email notification
+        Mail::to($newCompany['email'])->send(new NewCompanyNotification($company));
+
         return redirect()->route('companies.show', $company)
             ->with('message', 'Company Created Successfully');
     }
