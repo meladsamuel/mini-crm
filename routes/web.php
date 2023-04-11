@@ -28,6 +28,6 @@ Route::get('/home', function () {
 
 
 Route::middleware(['auth'])->group(function () {
-Route::resource('companies', CompanyController::class);
-Route::resource('employees', EmployeeController::class);
+    Route::resource('companies', CompanyController::class);
+    Route::resource('employees', EmployeeController::class);
 });

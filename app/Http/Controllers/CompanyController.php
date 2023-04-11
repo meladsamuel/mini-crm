@@ -2,22 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\CompaniesDataTable;
 use App\Mail\NewCompanyNotification;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Yajra\DataTables\DataTables;
 
 class CompanyController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    // public function index()
+    // {
+    //     $entries = 10;
+    //     $companies = Company::latest()->paginate($entries);
+    //     return view('companies.index', compact('companies'))
+    //         ->with('i', (request()->input('page', 1) - 1) * $entries);
+    // }
+    public function index(CompaniesDataTable $dataTable)
     {
-        $entries = 10;
-        $companies = Company::latest()->paginate($entries);
-        return view('companies.index', compact('companies'))
-            ->with('i', (request()->input('page', 1) - 1) * $entries);
+        return $dataTable->render('companies.index');
     }
 
     /**
@@ -49,7 +55,8 @@ class CompanyController extends Controller
         $company = Company::create($newCompany);
 
         // send email notification
-        Mail::to($newCompany['email'])->send(new NewCompanyNotification($company));
+        if ($newCompany['email'])
+            Mail::to($newCompany['email'])->send(new NewCompanyNotification($company));
 
         return redirect()->route('companies.show', $company)
             ->with('message', 'Company Created Successfully');
@@ -104,7 +111,5 @@ class CompanyController extends Controller
     public function destroy(Company $company)
     {
         $company->delete();
-        return redirect()->route('companies.index')
-            ->with('message', 'Company Deleted Successfully');
     }
 }
